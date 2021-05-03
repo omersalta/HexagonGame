@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 public class GameBoard : MonoBehaviour {
@@ -34,6 +35,7 @@ public class GameBoard : MonoBehaviour {
     private static List <BoardHexagon> _BoardHexs;
     private static int _row;
     private static int _column;
+    private static GameObject _reals;
 
 
     public void Initialize(int row, int column, float xOffset, float yOffset) {
@@ -49,14 +51,15 @@ public class GameBoard : MonoBehaviour {
             }
         }
         
-        Debug.Log("all element created");
+        _reals = new GameObject("_Reals");
     }
 
-    private List <BoardHexagon> createBoard(int row, int column) {
+    private List <BoardHexagon> createBoard (int row, int column) {
         List <BoardHexagon> tempList = new List<BoardHexagon>();
         
-        for (int x = 0; x < column; x++) {
-            for (int y = 0; y < row; y++) {
+        for (int y = 0; y < column; y++) {
+            for (int x = 0; x < row; x++) {
+                //first hexagons of rows must created because of single dimension list
                 tempList.Add(createBoardHexagon(x, y));
             }
         }
@@ -64,6 +67,23 @@ public class GameBoard : MonoBehaviour {
         return tempList;
     }
 
+    public static void LoadAllBoard (int maxColor) {
+        for (int x = 0; x < _column; x++) {
+            for (int y = 0; y < _row; y++) {
+                createHexagon(x,y,Random.Range(1,maxColor+1));
+            }
+        }
+    }
+    
+    public static Hexagon createHexagon (int x, int y, int color) {
+        //Debug.LogWarning("if already there is real hexagon in same position it will destroy");
+        
+        GameObject hex = new GameObject();
+        hex.transform.parent = _reals.transform;
+        hex.AddComponent<Hexagon>().Initilize(x,y,color);
+        return hex.GetComponent<Hexagon>();
+    }
+    
     BoardHexagon createBoardHexagon(int x, int y) {
         GameObject go = new GameObject();
         BoardHexagon hex = go.AddComponent<BoardHexagon>();
@@ -81,9 +101,53 @@ public class GameBoard : MonoBehaviour {
     }
     
     
-    public static BoardHexagon getBoardHexagons (int x, int y) {
+    public static BoardHexagon getBoardHexagon (int x, int y) {
         if (_row > x && x >= 0 && _column > y && y >= 0)
             return _BoardHexs[y * _row + x];
+        return null;
+    }
+    
+    public static List<BoardHexagon> GetEmptyBoardHexagons () {
+        List<BoardHexagon> tempList = new List<BoardHexagon>();
+        foreach (var boardHex in _BoardHexs) {
+            if (boardHex.myHexagon == null) {
+                tempList.Add(boardHex);
+            }
+        }
+        if (tempList.Any()) {
+            return tempList;
+        }
+        return null;
+    }
+    
+    public static List<Hexagon> GetFallingHexagons () {
+        
+        List<Hexagon> tempList = new List<Hexagon>();
+       
+        for (int x = 0; x < getColumnNumber(); x++) {
+            bool stimulus = false;
+            for (int y = 0; y < getRowNumber(); y++) {
+                var myHex = getBoardHexagon(x, y).myHexagon;
+                if (!myHex) {
+                    stimulus = true;
+                }
+                
+                if (stimulus && myHex) {
+                    tempList.Add(myHex);
+                }
+            }  
+        }
+        
+        foreach (var boardHex in _BoardHexs) {
+            if (boardHex.myHexagon == null) {
+                
+                tempList.Add(boardHex.myHexagon);
+            }
+        }
+        
+        if (tempList.Any()) {
+            return tempList;
+        }
         return null;
     }
     

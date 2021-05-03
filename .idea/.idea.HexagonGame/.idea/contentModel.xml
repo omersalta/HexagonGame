@@ -13,7 +13,7 @@
           <e p="GameManager.cs" t="Include" />
           <e p="Hexagons.cs" t="Include" />
           <e p="InputState.cs" t="Include" />
-          <e p="Player.cs" t="Include" />
+          <e p="rotateAround.cs" t="Include" />
           <e p="Sound.cs" t="Include" />
           <e p="TripleGroup.cs" t="Include" />
         </e>

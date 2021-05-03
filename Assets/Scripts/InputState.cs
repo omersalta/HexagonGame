@@ -9,7 +9,8 @@ public class InputState : MonoBehaviour {
     private Vector2 startTouch, swipeDelta;
 
     public Vector2 SwipeDelta { get { return swipeDelta; } }
-    public bool Tap { get { return tap; } }
+    public bool Up { get { return up; } }
+    public Vector2 downPos;
     public Vector2 upPos;
     public Vector2 currentPos;
     public bool SwipeLeft { get { return swipeLeft; } }
@@ -35,13 +36,7 @@ public class InputState : MonoBehaviour {
         }
         
         #endregion
-        
-        if (tap) {
-            if ((startTouch-upPos).magnitude < 10 ) {
-                up = true;
-            }
-        }
-        
+
         #region Mobile Input
         if (Input.touches.Length > 0) {
             if (Input.touches[0].phase == TouchPhase.Began) {
@@ -55,7 +50,13 @@ public class InputState : MonoBehaviour {
             }
         }
         #endregion
-
+        //checking for just tap
+        if (tap) {
+            if ((startTouch-upPos).magnitude < 10 ) {
+                up = true;
+            }
+        }
+        
         //Calculate the distance
         swipeDelta = Vector2.zero;
         if (isDraging) {
@@ -101,8 +102,8 @@ public class InputState : MonoBehaviour {
     }
 
      void Reset() {
-         startTouch = swipeDelta = Vector2.zero;
-        isDraging = false;
+         swipeDelta = Vector2.zero;
+         isDraging = false;
      }
 }
 

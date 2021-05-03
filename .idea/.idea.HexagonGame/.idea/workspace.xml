@@ -10,6 +10,8 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Hexagons.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/FE84F4A7-54DA-4A6B-B64F-CA409D40938A/43/8631ba1a/Object.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/rotateAround.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@8.2.0/Runtime/Debugging/DebugUpdater.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
@@ -18,10 +20,14 @@
       <option value="$PROJECT_DIR$/Assets/Scripts/RealHexagon.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Bomb.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/tryMonobehavior.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/SpriteTest.cs" />
+      <option value="$PROJECT_DIR$/Assets/QuickOutline/Scripts/Outline.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Player.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/InputState.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/rotateAround.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/TripleGroup.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/Hexagons.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/GameBoard.cs" />
     </changedPaths>
   </component>
@@ -34,7 +40,7 @@
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="full.screen.before.presentation.mode" value="true" />
-    <property name="settings.editor.selected.configurable" value="project.scopes" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C#" />
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
@@ -68,6 +74,10 @@
       <workItem from="1619305594049" duration="2297000" />
       <workItem from="1619359476554" duration="3288000" />
       <workItem from="1619389508696" duration="7474000" />
+      <workItem from="1619450485350" duration="5698000" />
+      <workItem from="1619542111554" duration="4036000" />
+      <workItem from="1619729875759" duration="2685000" />
+      <workItem from="1619834026535" duration="37955000" />
     </task>
     <servers />
   </component>

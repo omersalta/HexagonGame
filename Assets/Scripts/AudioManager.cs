@@ -3,7 +3,7 @@ using UnityEngine.Audio;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour {
-
+    
     public static AudioManager instance;
     
     public Sound[] Sounds;
@@ -29,8 +29,22 @@ public class AudioManager : MonoBehaviour {
     
     
     public void Play(string name) {
+        
+        Sound s = Array.Find(Sounds, Sound => Sound.name == name);
+        s.source.pitch = 1;
+        
+        if (s == null) {
+            Debug.LogWarning(name +" sound cannot find");
+        }else {
+            s.source.Play();
+        }
+        
+    }
+    
+    public void Play(string name, float pitch) {
 
         Sound s = Array.Find(Sounds, Sound => Sound.name == name);
+        s.source.pitch = pitch;
         
         if (s == null) {
             Debug.LogWarning(name +" sound cannot find");
@@ -41,7 +55,7 @@ public class AudioManager : MonoBehaviour {
     }
     
     public void Stop(string name) {
-
+        
         Sound s = Array.Find(Sounds, Sound => Sound.name == name);
         
         if (s == null) {
@@ -49,7 +63,6 @@ public class AudioManager : MonoBehaviour {
         }else {
             s.source.Stop();
         }
-        
     }
     
     public void StopAll() {

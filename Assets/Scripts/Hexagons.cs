@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public abstract class AbsHexagon : MonoBehaviour {
@@ -15,7 +14,7 @@ public abstract class AbsHexagon : MonoBehaviour {
 public class Bomb : Hexagon {
     public int bombCountdown;
     
-    public void Initilize (int givenX,int givenY,int color,int countDown) {
+    public void Initilize (int givenX, int givenY, int color, int countDown) {
         base.Initilize(givenX, givenY, color);
         GetComponentsInChildren<SpriteRenderer>()[1].enabled = true;
         bombCountdown = countDown;
@@ -101,68 +100,77 @@ public class Hexagon : AbsHexagon {
     public BoardHexagon myBoardHexagon;
     public int color; //color index
     
+    private static float cycleStepTime = 0.50f;
+    private static float delay = 0.01f;
+    private static float cycleStepTimeR = 0.20f;
+    private static float delayR = 0.005f;
     
-    private static float cycleStepTime = 0.33f;
-    private static float delay = 0.03f;
-    private static int proccesCounter;
+    public static float getEndTime() {
+        return cycleStepTime;
+    }
+    
+    public static float getPlusTime() {
+        return delay;
+    }
+    
+    public static float getEndTimeR() {
+        return cycleStepTimeR;
+    }
+    
+    public static float getPlusTimeR() {
+        return delayR;
+    }
+    
+    public static float getRotAngleR() {
+        return 120/((cycleStepTimeR/delayR)+1);
+    }
+    
+    private static int rotationProccesCounter;
     //Neighbors of RealHexagon
-    private static Color[] _colors = new[] {
-        Color.clear,
-        Color.blue,
-        Color.red,
-        Color.green,
-        Color.yellow,
-        Color.cyan,
-        Color.magenta,
-        Color.grey,
-        Color.black,
+    
+    private static Color32[] _colors = new[] {
+        new Color32(10,150,255, 255),
+        new Color32(10,150,255, 255),
+        new Color32(255,40,50, 255),
+        new Color32(50,255,40, 255),
+        new Color32(240,255,40, 255),
+        new Color32(255,160,10, 255),
+        new Color32(250,40,250, 255),
+        new Color32(0,0,0, 255),
     };
     
     public void Initilize (int givenX,int givenY,int color) {
         x = givenX;
         y = givenY;
         name = x + "," + y + " (Real)";
-        var sp  = Resources.Load<Sprite>("Sprites/hexagon");
+        var sp  = Resources.Load<Sprite>("Artwork/Sprites/hexagon");
+        gameObject.AddComponent<RecycleGameObject>();
         gameObject.AddComponent<SpriteRenderer>().sprite = sp;
         setColor(color);
         if (GameBoard.getBoardHexagon(givenX, givenY).myHexagon == null) {
              myBoardHexagon = GameBoard.getBoardHexagon(givenX,givenY);
              myBoardHexagon.myHexagon = gameObject.GetComponent<Hexagon>();
              transform.position = myBoardHexagon.transform.position + new Vector3(0, Random.Range(1,10), 0);
-             gameObject.GetComponent<Hexagon>().SingleFall(GameBoard.getBoardHexagon(givenX,givenY));
+             gameObject.GetComponent<Hexagon>().GoTo(GameBoard.getBoardHexagon(givenX,givenY));
         }else {
             Debug.LogWarning(name+": this Board Hexagon already pick a real hexagon");
             Destroy(gameObject);
         }
         //setColor(Random.Range(1, GameBoard.getMaxColorNumber() + 1));
     }
-
-    private void ProcessStart() {
-        proccesCounter++;
-    }
-    private void ProcessFinish() {
-        proccesCounter--;
-    }
-
-    public static bool AnyProcess {
-        get => proccesCounter == 0;
-    }
-    
     
     public void setColor(int colorNumber) {
         // Debug.Log("Called with colornumber: " + colorNumber);
         if (0 <= colorNumber && colorNumber < _colors.Length) {
             //Debug.Log("color changed on "+ name+ "before :"+colorNumber+" after:"+colorNumber);
             color = colorNumber;
-            GetComponent<SpriteRenderer>().color = _colors[color];
-            
+            GetComponent<SpriteRenderer>().color = (Color) _colors[colorNumber];;
         }else {
             Debug.Log("colorNumber not in range");
         }
     }
     
-    
-    private List<Hexagon> checkPossibleExplosions (int whichColor, Hexagon except) {
+    private List<Hexagon> CE (int whichColor, Hexagon except) {
         int checkColor = whichColor;
         if (checkColor == 0)
             checkColor = color;
@@ -175,7 +183,7 @@ public class Hexagon : AbsHexagon {
         D = myBoardHexagon.GetRealD();
         E = myBoardHexagon.GetRealE();
         F = myBoardHexagon.GetRealF();
-
+        
         List<Hexagon> tempList = new List<Hexagon>();
         if (A && B && A != except && B != except && checkColor == A.color && checkColor == B.color) {
             tempList.Add(myBoardHexagon.myHexagon);
@@ -216,7 +224,7 @@ public class Hexagon : AbsHexagon {
         // Debug.Log("im returing this:"+mustExplode+", my color is :"+color);
         return tempList;
     }
-
+    
     public List<Hexagon> getNeighbors() {
         
         List<Hexagon> tempList = new List<Hexagon>();
@@ -236,151 +244,137 @@ public class Hexagon : AbsHexagon {
         tempList.Add(D);
         tempList.Add(E);
         tempList.Add(F);
-
-        Debug.Log(A);
-        Debug.Log(B);
-        Debug.Log(C);
-        Debug.Log(D);
-        Debug.Log(E);
-        Debug.Log(F);
         
         return tempList;
     }
 
-    public List<Hexagon> checkExplosionList() {
-        return checkPossibleExplosions(0,null);
+    public List<Hexagon> GetExplosionList() {
+        return CE(0,null);
+    }
+    
+    public bool CheckAnyPosibleExplosion() {
+        bool possibleExplosion = false;
+        foreach (var myNeighbor in getNeighbors()) {
+            if (myNeighbor && myNeighbor.CE(color, GetComponent<Hexagon>()).Any()) {
+                possibleExplosion = true;
+            }
+        }
+        return possibleExplosion;
+    }
+
+    public static void ExplodeGivenList(List<Hexagon> givenList, Player player) {
+        givenList.ForEach(hex => {
+            hex.myBoardHexagon.myHexagon = null;
+            hex.Explode();
+        });
+        var CalculatedScore = calculateScore(givenList.Count, player);
+        /*Debug.LogWarning("Count = " + givenList.Count + "calculated = " +
+                         CalculatedScore + "combo:"+GameManager.GetCurrentCombo());*/
+        
+        player.AddScore(CalculatedScore);
+        var hexColor = _colors[givenList[1].color];
+        var Scoring = GameObjectUtil.Instantiate(Resources.Load("prefabs/Scoring") as GameObject, GetCenter(givenList));
+        Scoring.GetComponent<PointsTextScirpt>().SetValue(CalculatedScore,hexColor);
+        //Scoring.GetComponent<TextMeshProUGUI>().text = CalculatedScore.ToString();
     }
     
     
+
+    public static Vector3 GetCenter(List<Hexagon> givenList) {
+        var totalX = 0f;
+        var totalY = 0f;
+        
+        foreach(var element in givenList)
+        {
+            totalX += element.transform.position.x;
+            totalY += element.transform.position.y;
+        }
+        
+        var centerX = totalX / givenList.Count;
+        var centerY = totalY / givenList.Count;
+        return new Vector3(centerX, centerY, 0f);
+    }
+    
+    
+    private static int calculateScore(int explodeCount, Player player) {
+        return explodeCount * 15 * player.GetComboMultiplier();
+    }
     
     public void Explode () {
+        var variableForPrefab = Resources.Load("prefabs/ExplodeEffect") as GameObject;
+        var ps = GameObjectUtil.Instantiate(variableForPrefab, transform.position);
+        var main = ps.GetComponent<ParticleSystem>().main;
+        main.startColor = (Color)_colors[color];
         Destroy(gameObject);
     }
     
-    public static void FallAll() {
-        var FallList = GameBoard.GetFallingHexagons();
-        while (FallList.Any()) {
-            if (!AnyProcess) {
-                
-                FallList = GameBoard.GetFallingHexagons();
-                foreach (var hex in FallList) {
-                    hex.SingleFall(GameBoard.getBoardHexagon(hex.x, hex.y-1));
-                }
-                
-            }
-        }
-
-        foreach (var emptyBoardHexagon in GameBoard.GetEmptyBoardHexagons()) {
-            GameBoard.createHexagon(emptyBoardHexagon.x, emptyBoardHexagon.y,
-                Random.Range(1, GameManager.GetMaxColor() + 1));
-        }
-    }
-
-    public void SingleFall(BoardHexagon targetBoardHexagon) {
-        ProcessStart();
+    public void GoTo(BoardHexagon targetBoardHexagon) {
         float _currentSec = 0;
+        Vector3 from = transform.localPosition;
+        Faller.StartCallback();
         myBoardHexagon.myHexagon = null;
         myBoardHexagon = null;
-        Vector3 from = transform.position;
-        StartCoroutine(singleFall(targetBoardHexagon.transform.position));
+        myBoardHexagon = targetBoardHexagon;
+        myBoardHexagon.myHexagon = gameObject.GetComponent<Hexagon>();
+        x = myBoardHexagon.x;
+        y = myBoardHexagon.y;
+        
+        StartCoroutine(singleFall(targetBoardHexagon.transform.localPosition));
         
         IEnumerator singleFall(Vector3 To) {
         
-            yield return new WaitForSeconds(delay);
-            _currentSec += delay-0.02f;
-            transform.position = Vector3.Lerp(from, To, _currentSec / cycleStepTime);
+            yield return new WaitForSeconds(getPlusTime());
+            _currentSec += getPlusTime();
+            transform.localPosition = LerpV2( from, To, _currentSec / getEndTime(), 3);
+            //transform.position = Vector3.Lerp( from, To, _currentSec / cycleStepTime);
             
-            
-            if (_currentSec < cycleStepTime) {
+            if (_currentSec < getEndTime()) {
                 StartCoroutine(singleFall(To));
             }else {
-                myBoardHexagon = targetBoardHexagon;
-                myBoardHexagon.myHexagon = gameObject.GetComponent<Hexagon>();
-                ProcessFinish();
                 StopCoroutine(singleFall(To));
+                Faller.finishCallback();
             }
         }
-    }
 
-    public static void Rotation(bool direction) {
-        
-        if (TripleGroup.GetSelectedTrpile().Count != 3) {
-            Debug.LogWarning("SelectedTriple count is not equal 3");
-            return;
-        }
-        
-        var Hexagon1 = TripleGroup.GetSelectedTrpile()[0];
-        var Hexagon2 = TripleGroup.GetSelectedTrpile()[1];
-        var Hexagon3 = TripleGroup.GetSelectedTrpile()[2];
-        
-        if (direction == false) {
-            Hexagon1 = TripleGroup.GetSelectedTrpile()[2];
-            Hexagon2 = TripleGroup.GetSelectedTrpile()[1];
-            Hexagon3 = TripleGroup.GetSelectedTrpile()[0];
-        }
-
-
-        GameManager.AnimationStart();
-        for (int i = 0; i < 3;) {
-            if (!AnyProcess) {
-                
-                List<Hexagon> tempExplodeList = new List<Hexagon>();
-                foreach (var selectedHexagon in TripleGroup.GetSelectedTrpile()) {
-                    selectedHexagon.checkExplosionList().ForEach(hex => tempExplodeList.Add(hex));
-                }
-                
-                if (tempExplodeList.Any()) {
-                    tempExplodeList.ForEach(hex => hex.Explode());
-                    FallAll();
-                    return;
-                }
-                
-                Hexagon1.StepRotation(TripleGroup.GetCenterOfSelection(),direction,Hexagon2.myBoardHexagon);
-                Hexagon2.StepRotation(TripleGroup.GetCenterOfSelection(),direction,Hexagon3.myBoardHexagon);
-                Hexagon3.StepRotation(TripleGroup.GetCenterOfSelection(),direction,Hexagon1.myBoardHexagon);
-                
-               
-                i++;
+        Vector3 LerpV2(Vector3 a, Vector3 b, float t, int x) {
+            if (x == 1) {
+                return Vector3.Lerp(a, b, t);
+            }else {
+                return LerpV2(Vector3.Lerp( a, b, t), b, t, x - 1);
             }
         }
-        GameManager.AnimationFinished(); //if player miss turn triple hexagons
+        
         
     }
     
-
     
-    public void StepRotation(Vector3 centerPos, bool direction, BoardHexagon targetBoardHexagon) {
-        
+    public void StepRotation(TripleGroup tripleSelector, bool direction, BoardHexagon targetBoardHexagon) {
+
+        Vector3 cPos = tripleSelector.GetCenterOfSelection();
         float _currentSec = 0;
-        
-        ProcessStart();
-        myBoardHexagon.myHexagon = null;
-        myBoardHexagon = null;
         var directionVector = Vector3.back;
         if (!direction) {
             directionVector = Vector3.forward;
         }
-        StartCoroutine(StepRotate(centerPos));
+        
+        Rotator.StartCallback();
+        StartCoroutine(StepRotate(cPos));
         
         IEnumerator StepRotate(Vector3 center) {
         
-            yield return new WaitForSeconds(delay);
-            _currentSec += delay;
-            transform.RotateAround(center, directionVector, 10);
+            yield return new WaitForSeconds(getPlusTimeR());
+            _currentSec += getPlusTimeR();
+            transform.RotateAround(center, directionVector, getRotAngleR());
             
-            
-            if (_currentSec < cycleStepTime) {
+            if (_currentSec < getEndTimeR()) {
                 StartCoroutine(StepRotate(center));
             }else {
                 myBoardHexagon = targetBoardHexagon;
-                myBoardHexagon.myHexagon = gameObject.GetComponent<Hexagon>();
-                ProcessFinish();
+                targetBoardHexagon.myHexagon = GetComponent<Hexagon>();
                 StopCoroutine(StepRotate(center));
+                Rotator.finishCallback(tripleSelector);
             }
         }
     }
-
+    
 }
-
-
-

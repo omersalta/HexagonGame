@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -28,7 +27,7 @@ public class GameBoard : MonoBehaviour {
     }
 
     #endregion
-    public GameObject hexPrefab;
+    private Vector2 zeroPosition;
     
     private float _xOffset;
     private float _yOffset;
@@ -36,9 +35,17 @@ public class GameBoard : MonoBehaviour {
     private static int _row;
     private static int _column;
     private static GameObject _reals;
+    private static GameObject _board;
 
 
     public void Initialize(int row, int column, float xOffset, float yOffset) {
+        transform.localPosition = new Vector3(0, 0, 0);
+        
+        _board = new GameObject("_Board");
+        _board.transform.parent = transform;
+        _board.transform.localPosition = new Vector3(0, 0, 0);
+        
+        Debug.LogWarning("initilize called");
         _xOffset = xOffset;
         _yOffset = yOffset;
         _row = row;
@@ -52,8 +59,17 @@ public class GameBoard : MonoBehaviour {
         }
         
         _reals = new GameObject("_Reals");
+        _reals.transform.parent = transform;
+        _reals.transform.localPosition = new Vector3(0, 0, 0);
+
+        //CameraSettings.ReStartCam();
     }
 
+    public static void GameOver() {
+        Destroy(GameObject.Find("_Reals"));
+        Destroy(GameObject.Find("_Board"));
+    }
+    
     private List <BoardHexagon> createBoard (int row, int column) {
         List <BoardHexagon> tempList = new List<BoardHexagon>();
         
@@ -68,16 +84,16 @@ public class GameBoard : MonoBehaviour {
     }
 
     public static void LoadAllBoard (int maxColor) {
+        Debug.LogWarning("loadallbard called");
         for (int x = 0; x < _column; x++) {
             for (int y = 0; y < _row; y++) {
-                createHexagon(x,y,Random.Range(1,maxColor+1));
+                CreateHexagon(x,y,Random.Range(1,maxColor+1));
             }
         }
     }
     
-    public static Hexagon createHexagon (int x, int y, int color) {
+    public static Hexagon CreateHexagon (int x, int y, int color) {
         //Debug.LogWarning("if already there is real hexagon in same position it will destroy");
-        
         GameObject hex = new GameObject();
         hex.transform.parent = _reals.transform;
         hex.AddComponent<Hexagon>().Initilize(x,y,color);
@@ -87,19 +103,18 @@ public class GameBoard : MonoBehaviour {
     BoardHexagon createBoardHexagon(int x, int y) {
         GameObject go = new GameObject();
         BoardHexagon hex = go.AddComponent<BoardHexagon>();
-        go.transform.parent = transform;
+        go.transform.parent = _board.transform;
         go.name = x + ", " + y;
         if (x % 2 == 0)
-            go.transform.position = new Vector3(x * _xOffset, y * _yOffset, 0);
+            go.transform.localPosition = new Vector3(x * _xOffset, y * _yOffset, 0);
         else
-            go.transform.position = new Vector3(x * _xOffset, _yOffset / 2 + y * _yOffset, 0);
+            go.transform.localPosition = new Vector3(x * _xOffset, _yOffset / 2 + y * _yOffset, 0);
         return hex;
     }
 
     Hexagon GetHex (int x, int y) {
         return _BoardHexs[y*_row + x].myHexagon;
     }
-    
     
     public static BoardHexagon getBoardHexagon (int x, int y) {
         if (_row > x && x >= 0 && _column > y && y >= 0)
@@ -114,41 +129,26 @@ public class GameBoard : MonoBehaviour {
                 tempList.Add(boardHex);
             }
         }
-        if (tempList.Any()) {
-            return tempList;
-        }
-        return null;
+        return tempList;
     }
     
     public static List<Hexagon> GetFallingHexagons () {
         
         List<Hexagon> tempList = new List<Hexagon>();
-       
         for (int x = 0; x < getColumnNumber(); x++) {
             bool stimulus = false;
             for (int y = 0; y < getRowNumber(); y++) {
                 var myHex = getBoardHexagon(x, y).myHexagon;
-                if (!myHex) {
+                if (myHex == null) {
                     stimulus = true;
                 }
-                
                 if (stimulus && myHex) {
                     tempList.Add(myHex);
                 }
             }  
         }
         
-        foreach (var boardHex in _BoardHexs) {
-            if (boardHex.myHexagon == null) {
-                
-                tempList.Add(boardHex.myHexagon);
-            }
-        }
-        
-        if (tempList.Any()) {
-            return tempList;
-        }
-        return null;
+        return tempList;
     }
     
     
@@ -163,7 +163,7 @@ public class GameBoard : MonoBehaviour {
     public static int getRowNumber() {
         return _row;
     }
-
+    
     public static int getColumnNumber() {
         return _column;
     }
@@ -184,6 +184,22 @@ public class GameBoard : MonoBehaviour {
             }
         }
         return tempList;
+        
+    }
+    
+    public static void GenerateNewHexagons () {
+        
+        int maxColor = GameSettings.ColorRange;
+        
+        // private static  List<BoardHexagon> getHexs() {
+        //     List<BoardHexagon> EmptyBoardHexs = new List<BoardHexagon>();
+        //     GetColumn()
+        // }
+        //Debug.LogWarning("maxColor :"+ maxColor);
+        foreach (var emptyBH in GetEmptyBoardHexagons()) {
+            //Debug.Log("emptyBH = " + emptyBH.name);
+            Faller.addToLastFall(CreateHexagon(emptyBH.x, emptyBH.y, Random.Range(1, maxColor + 1)));
+        }
         
     }
     

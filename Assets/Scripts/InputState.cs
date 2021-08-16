@@ -10,7 +10,7 @@ public class InputState : MonoBehaviour {
 
     public Vector2 SwipeDelta { get { return swipeDelta; } }
     public bool Up { get { return up; } }
-    public Vector2 downPos;
+    public Vector2 downPos { get { return startTouch; } }
     public Vector2 upPos;
     public Vector2 currentPos;
     public bool SwipeLeft { get { return swipeLeft; } }
@@ -88,16 +88,6 @@ public class InputState : MonoBehaviour {
             Reset();
         }
         
-        if(up)
-            Debug.Log("On IS up");
-        if(swipeRight)
-           Debug.Log("On IS swipeRight");
-        if(swipeLeft)
-            Debug.Log("On IS swipeLeft");
-        if(swipeDown)
-            Debug.Log("On IS swipeDown");
-        if(swipeUp)
-            Debug.Log("On IS swipeUp");
         
     }
 

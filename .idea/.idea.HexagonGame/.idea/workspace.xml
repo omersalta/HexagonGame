@@ -8,11 +8,22 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/62FFEEB7-EC02-4BEA-B61E-5FBF8D44AC5B/66/85e007da/Void.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/FE84F4A7-54DA-4A6B-B64F-CA409D40938A/1b/4e304764/Component.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/MenuManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Rotator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/CameraSettings.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/FE84F4A7-54DA-4A6B-B64F-CA409D40938A/80/89614927/Behaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Example.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/48827A05-C015-4B4B-ADA3-2EAF5C10D8B0/0e/a4760dbc/Random.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7F90ED7B-2CD3-4BC5-95F5-E9D084F29FE3/93/e18926bc/Animator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Hexagons.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/FE84F4A7-54DA-4A6B-B64F-CA409D40938A/43/8631ba1a/Object.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/rotateAround.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@8.2.0/Runtime/Debugging/DebugUpdater.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/FE84F4A7-54DA-4A6B-B64F-CA409D40938A/a4/e79e0c6b/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/FE84F4A7-54DA-4A6B-B64F-CA409D40938A/45/c272d3b7/GameObject.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Faller.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -22,13 +33,28 @@
       <option value="$PROJECT_DIR$/Assets/Scripts/tryMonobehavior.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/SpriteTest.cs" />
       <option value="$PROJECT_DIR$/Assets/QuickOutline/Scripts/Outline.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Player.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/InputState.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/rotateAround.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/TestScripts/ColorSetterForTesting.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/exponantialInre.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Example.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/RecycleGameObject.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/StartMenuManager.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/ScoreTextAnimationTrigger.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/AudioManager.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/ScoreTextScript.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Rotator.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/AnimScripts/ScoreTextScript.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Faller.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/AnimScripts/PointsTextScirpt.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Player.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/GameObjectUtil.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/TripleGroup.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/Hexagons.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/GameBoard.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Hexagons.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/CameraSettings.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/MenuManager.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1raVkVtJXIqbl6CXbBkFqaUuTEs" />
@@ -37,12 +63,32 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.34994525" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
     <property name="Discover.Launch.Via.Unity" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="full.screen.before.presentation.mode" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C#" />
   </component>
-  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+  <component name="RunManager" selected=".NET Static Method.Hexagon.FallAll">
+    <configuration name="Hexagon.FallAll" type="DotNetStaticMethod" factoryName=".NET Static Method" temporary="true">
+      <option name="EXE_PATH" value="C:\Program Files\JetBrains\JetBrains Rider 2020.3.3\lib\ReSharperHost\JetLauncherILc.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/Assembly-CSharp.csproj" />
+      <option name="PROJECT_TFM" value=".NETFramework,Version=v4.7.1" />
+      <option name="CLASS_NAME" value="Hexagon" />
+      <option name="METHOD_NAME" value="FallAll" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
     <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
@@ -61,6 +107,11 @@
       </option>
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue=".NET Static Method.Hexagon.FallAll" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -77,7 +128,52 @@
       <workItem from="1619450485350" duration="5698000" />
       <workItem from="1619542111554" duration="4036000" />
       <workItem from="1619729875759" duration="2685000" />
-      <workItem from="1619834026535" duration="37955000" />
+      <workItem from="1619834026535" duration="42538000" />
+      <workItem from="1620195140364" duration="7013000" />
+      <workItem from="1620293203167" duration="6312000" />
+      <workItem from="1620370284028" duration="5947000" />
+      <workItem from="1620462277062" duration="6272000" />
+      <workItem from="1620565675407" duration="1222000" />
+      <workItem from="1621356365215" duration="684000" />
+      <workItem from="1621674579923" duration="3702000" />
+      <workItem from="1622049389371" duration="4110000" />
+      <workItem from="1622133403857" duration="1470000" />
+      <workItem from="1623248939710" duration="8219000" />
+      <workItem from="1623344223645" duration="6060000" />
+      <workItem from="1623497353818" duration="4690000" />
+      <workItem from="1623686398752" duration="3457000" />
+      <workItem from="1623752598251" duration="1173000" />
+      <workItem from="1623831401857" duration="13224000" />
+      <workItem from="1623963493543" duration="4253000" />
+      <workItem from="1624016513080" duration="5872000" />
+      <workItem from="1624091549843" duration="566000" />
+      <workItem from="1624092193736" duration="3364000" />
+      <workItem from="1624278186544" duration="2490000" />
+      <workItem from="1624394425208" duration="16449000" />
+      <workItem from="1624567745746" duration="4958000" />
+      <workItem from="1624643475566" duration="6144000" />
+      <workItem from="1624712076123" duration="15036000" />
+      <workItem from="1624915206090" duration="8103000" />
+      <workItem from="1625003193931" duration="335000" />
+      <workItem from="1625039314982" duration="3680000" />
+      <workItem from="1625140035103" duration="2528000" />
+      <workItem from="1626455490272" duration="2062000" />
+      <workItem from="1626532495507" duration="9717000" />
+      <workItem from="1626714897017" duration="6693000" />
+      <workItem from="1626827530864" duration="6913000" />
+      <workItem from="1626981653810" duration="4209000" />
+      <workItem from="1627063265811" duration="4255000" />
+      <workItem from="1627098446632" duration="4321000" />
+      <workItem from="1627487421138" duration="2232000" />
+      <workItem from="1627558542526" duration="1119000" />
+      <workItem from="1627842974477" duration="635000" />
+      <workItem from="1628005854182" duration="629000" />
+      <workItem from="1628088635964" duration="2129000" />
+      <workItem from="1628523775892" duration="1211000" />
+      <workItem from="1628696481127" duration="509000" />
+      <workItem from="1628701010413" duration="12412000" />
+      <workItem from="1628910866481" duration="11739000" />
+      <workItem from="1629091947843" duration="1392000" />
     </task>
     <servers />
   </component>

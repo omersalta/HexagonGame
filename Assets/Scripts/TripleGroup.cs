@@ -9,15 +9,53 @@ public class TripleGroup : MonoBehaviour {
     private static List<Hexagon> currentSelectedHexagons = new List<Hexagon>();
     private static Vector3 centerOfSelectedHexagons;
     private static GameObject selectionBorder;
+    private static int rotationProccesCounter;
+    private static Direction lastSwipeDirection;
+    private  InputState IS;
     
-    public static void setBorderObject(GameObject givenAdress) {
-        Debug.Log("selection border name is :" + givenAdress.name);
-        selectionBorder = givenAdress;
+    enum Direction {
+        RIGHT,
+        LEFT,
+        NONE,
+    };
+
+    void Start() {
+         IS = FindObjectOfType<InputState>();
+         lastSwipeDirection = Direction.NONE;
+         selectionBorder = gameObject;
     }
 
-    public static void selectTripleHexagons(Vector2 upPos) {
-        List<Hexagon> tempList = new List<Hexagon>();
+    public void setBorderObject(GameObject givenAdress) {
+        //selectionBorder = givenAdress;
+    }
+    
+    public void Rotation(bool direction) {
         
+        float _currentSec = 0;
+        
+        var directionVector = Vector3.back;
+        if (!direction) {
+            directionVector = Vector3.forward;
+        }
+        StartCoroutine(StepRotate());
+        IEnumerator StepRotate() {
+        
+            yield return new WaitForSeconds(Hexagon.getPlusTimeR());
+            _currentSec += Hexagon.getPlusTimeR();
+            selectionBorder.transform.RotateAround(centerOfSelectedHexagons, directionVector, Hexagon.getRotAngleR());
+            
+            
+            if (_currentSec < Hexagon.getEndTimeR()) {
+                StartCoroutine(StepRotate());
+            }else {
+                StopCoroutine(StepRotate());
+            }
+        }
+    }
+
+    public  void selectTripleHexagons(Vector2 upPos) {
+        
+        List<Hexagon> tempList = new List<Hexagon>();
         float minDist = float.MaxValue;
         
         Hexagon closest1 = null;
@@ -25,6 +63,7 @@ public class TripleGroup : MonoBehaviour {
         Hexagon closest3 = null;
 
         foreach (var hex in GameBoard.GetCurrentRealHexagonList()) {
+            //Debug.LogWarning(hex);
             var t = hex.transform;
             float dist = Vector2.Distance(Camera.main.WorldToScreenPoint(t.position), upPos);
             if (dist < minDist) {
@@ -34,14 +73,11 @@ public class TripleGroup : MonoBehaviour {
         }
         
         tempList.Add(closest1);
-        Debug.Log("first:"+closest1.name);
         minDist = float.MaxValue;
 
         var neighbors = closest1.getNeighbors();
-        
         neighbors.RemoveAll(item => item == null);
         foreach (var neighbor in neighbors) {
-            Debug.Log("second finder foreach:"+neighbor.name);
             var t = neighbor.transform;
             float dist = Vector2.Distance(Camera.main.WorldToScreenPoint(t.position), upPos);
             if (dist < minDist) {
@@ -51,7 +87,6 @@ public class TripleGroup : MonoBehaviour {
         }
         
         tempList.Add(closest2);
-        Debug.Log("second:"+closest2.name);
         minDist = float.MaxValue;
         
         var intersectList = closest1.getNeighbors().Intersect(closest2.getNeighbors()).ToList();
@@ -66,8 +101,6 @@ public class TripleGroup : MonoBehaviour {
         }
         
         tempList.Add(closest3);
-        Debug.Log("Third:"+closest3.name);
-        
         currentSelectedHexagons = sortSelectedHexs(tempList);
     }
     
@@ -76,7 +109,6 @@ public class TripleGroup : MonoBehaviour {
         foreach (var h in unsortedHexs) {
             //Debug.Log("unsorted of name."+h.name +" adding to center");
         }
-        
         
         List<Hexagon> sortedHexs = new List<Hexagon>();
         Hexagon hex;
@@ -100,29 +132,107 @@ public class TripleGroup : MonoBehaviour {
             sortedHexs.Add(unsortedHexs[1]);
             sortedHexs.Add(unsortedHexs[0]);
         }
-
         
         Vector3 center = Vector3.zero;
         foreach (var h in sortedHexs) {
-            Debug.Log("sortedhex of name."+h.name);
             center += h.transform.position/sortedHexs.Count;
         }
-        Debug.Log("center calculated :"+center);
-        
-        
         
         centerOfSelectedHexagons = center;
-        selectionBorder.GetComponent<SpriteRenderer>().flipX = sortedHexs[0].x == sortedHexs[1].x;
+        selectionBorder.GetComponent<SpriteRenderer>().flipX = sortedHexs[0].myBoardHexagon.x == sortedHexs[1].myBoardHexagon.x;
         selectionBorder.transform.position = center;
         return sortedHexs; 
     }
     
-    public static List<Hexagon> GetSelectedTrpile() {
+    public  List<Hexagon> GetSelectedTrpile() {
         return currentSelectedHexagons;
     }
 
-    public static Vector3 GetCenterOfSelection() {
+    public  Vector3 GetCenterOfSelection() {
         return centerOfSelectedHexagons;
     }
+    
+    public  Vector2 GetCenterOfSelectionV2() {
+        var x = centerOfSelectedHexagons.x;
+        var y = centerOfSelectedHexagons.y;
+        return new Vector2(x,y);
+    }
+    
+    
+    public void checkSelection(){
+        if (IS.Up) {
+            selectTripleHexagons(IS.upPos);
+            FindObjectOfType<AudioManager>().Play("selection");
+        }
+    }
+    
+    public bool checkSwipe() {
+        
+        bool swiping = false;
+        Vector3 downPos = IS.downPos;
+        Vector2 difference = downPos - Camera.main.WorldToScreenPoint(GetCenterOfSelection());
+        
+        if (IS.SwipeUp) {
+            swiping = true;
+            if (difference.x < 0) {
+                lastSwipeDirection = Direction.RIGHT;
+            }else {
+                lastSwipeDirection = Direction.LEFT;
+            }
+        }else if (IS.SwipeRight) {
+            swiping = true;
+            if (difference.y < 0) {
+                lastSwipeDirection = Direction.LEFT;
+
+            }else {
+                lastSwipeDirection = Direction.RIGHT;
+            }
+        }else if (IS.SwipeDown) {
+            swiping = true;
+            if (difference.x < 0) {
+                lastSwipeDirection = Direction.LEFT;
+                
+            }else {
+                lastSwipeDirection = Direction.RIGHT;
+            }
+        }else if (IS.SwipeLeft) {
+            swiping = true;
+            if (difference.y < 0) {
+                lastSwipeDirection = Direction.RIGHT;
+            }else {
+                lastSwipeDirection = Direction.LEFT;
+            }
+        }
+
+        if (GetSelectedTrpile().Count != 3) {
+            swiping = false;
+        }
+        
+        return swiping;
+    }
+
+    public void RotateSelectedHexagons() {
+        
+        if (GetSelectedTrpile().Count != 3) {
+            Debug.LogWarning("SelectedTriple count is not equal 3");
+            return;
+        }
+        Vector2 center = Camera.main.WorldToScreenPoint(GetCenterOfSelectionV2());
+        selectTripleHexagons(center);
+        //ColorSetterForTesting.saveHexagonColorMap();
+        bool direction = false;
+        var comp = gameObject.GetComponent<TripleGroup>();
+        
+        if (lastSwipeDirection == Direction.RIGHT) {
+            direction = true;
+            Rotator.Rotation(true, comp);
+        }else if (lastSwipeDirection == Direction.LEFT) {
+            Rotator.Rotation(false, comp);
+        }
+        
+    }
+    
+    
+    
     
 }
